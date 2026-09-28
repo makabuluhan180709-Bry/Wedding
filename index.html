@@ -2,26 +2,72 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bry &amp; Jimmay Wedding Invitation</title>
-  <meta http-equiv="refresh" content="0; url=https://script.google.com/macros/s/AKfycbyGrEaXan0pKLe-o1KRpxZQAKDxBtdY3wV2cox6pMTVsaVoJkCl9Cwshjfsy0MVRqWcNw/exec">
-  <script>
-    window.location.replace("https://script.google.com/macros/s/AKfycbyGrEaXan0pKLe-o1KRpxZQAKDxBtdY3wV2cox6pMTVsaVoJkCl9Cwshjfsy0MVRqWcNw/exec");
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Bryant &amp; Jimmay Wedding Invitation</title>
   <style>
-    body {
-      margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center;
-      font-family: 'Georgia', serif; background: #f7f1e7; color: #6d6260; text-align: center;
-      padding: 20px; box-sizing: border-box;
+    html, body {
+      margin: 0; padding: 0; height: 100%; width: 100%;
+      background: #f7f1e7; overflow: hidden;
     }
-    a { color: #a8557c; }
+    iframe {
+      display: block; border: none; width: 100%; height: 100%;
+    }
+    /* Shown briefly while the invitation loads inside the frame */
+    #loading {
+      position: fixed; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 14px;
+      background: #f7f1e7; font-family: Georgia, serif; color: #8a7d78;
+      z-index: 2;
+    }
+    #loading.hidden { display: none; }
+    .spinner {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 3px solid rgba(150,135,128,0.2); border-top-color: #c59fa6;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    /* Fallback link, only shown if the iframe fails to load */
+    #fallback { display: none; text-align: center; margin-top: 10px; }
+    #fallback a { color: #a8557c; }
   </style>
 </head>
 <body>
-  <p>
-    Opening your wedding invitation...<br><br>
-    If it doesn't open automatically,
-    <a href="https://script.google.com/macros/s/AKfycbyGrEaXan0pKLe-o1KRpxZQAKDxBtdY3wV2cox6pMTVsaVoJkCl9Cwshjfsy0MVRqWcNw/exec">tap here</a>.
-  </p>
+  <div id="loading">
+    <div class="spinner"></div>
+    <p>Opening your invitation...</p>
+    <div id="fallback">
+      Taking a while? <a href="https://script.google.com/macros/s/AKfycbyGrEaXan0pKLe-o1KRpxZQAKDxBtdY3wV2cox6pMTVsaVoJkCl9Cwshjfsy0MVRqWcNw/exec" target="_top">Tap here</a>
+    </div>
+  </div>
+
+  <iframe
+    id="inviteFrame"
+    src="https://script.google.com/macros/s/AKfycbyGrEaXan0pKLe-o1KRpxZQAKDxBtdY3wV2cox6pMTVsaVoJkCl9Cwshjfsy0MVRqWcNw/exec"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+  ></iframe>
+
+  <script>
+    var frame = document.getElementById('inviteFrame');
+    var loading = document.getElementById('loading');
+    var fallback = document.getElementById('fallback');
+
+    frame.addEventListener('load', function () {
+      loading.classList.add('hidden');
+    });
+
+    // If it's still loading after a few seconds, show a manual fallback link
+    // (handles slow connections, and the rare case an iframe gets blocked).
+    setTimeout(function () {
+      if (!loading.classList.contains('hidden')) {
+        fallback.style.display = 'block';
+      }
+    }, 4000);
+
+    // Safety net in case the 'load' event never fires for some reason.
+    setTimeout(function () {
+      loading.classList.add('hidden');
+    }, 8000);
+  </script>
 </body>
 </html>
